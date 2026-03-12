@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Professional Todo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .todo-container { max-width: 600px; margin-top: 50px; }
+        .completed { text-decoration: line-through; color: #6c757d; /* Gray out the text */}  
+    </style>
+</head>
+<body>
+
+<div class="container todo-container shadow p-4 bg-white rounded">
+    <h2 class="text-center mb-4">Task Manager</h2>
+
+    <form action="/" method="POST" class="d-flex mb-4">
+        <input type="text" name="content" class="form-control me-2" placeholder="Add a new task..." required>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+    <ul class="list-group">
+        {% if tasks|length < 1 %}
+            <li class="list-group-item text-center text-muted">No tasks yet. Add one above!</li>
+        {% else %}
+            {% for task in tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="{{ 'completed' if task.status == 1 else '' }}">
+                            {{ task.content }}
+                            <br>
+                            <small class="text-muted" style="font-size: 0.7rem;">
+                                {{ task.date_created.strftime('%H:%M') }}
+                            </small>
+                        </div>
+                        <div>
+                            <a href="/done/{{task.id}}" class="btn btn-outline-success btn-sm">
+                                {{ 'Undo' if task.status == 1 else 'Done' }}
+                            </a>
+                            <a href="/delete/{{task.id}}" class="btn btn-outline-danger btn-sm">Delete</a>
+                        </div>
+                </li>
+
+            {% endfor %}
+        {% endif %}
+    </ul>
+</div>
+
+</body>
+</html>
