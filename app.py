@@ -67,9 +67,10 @@ def done(id):
         return redirect('/')
     except:
         return 'There was an issue updating your task'    
+    
+# This section ensures the database is created in a production environment
+with app.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
-    # This creates the database file automatically if it doesn't exist
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+    app.run(debug=True)   
